@@ -34,6 +34,18 @@ void main(void)
     //changes the brightness(intensity to 30/64)   
 while (1)
     {
+    uint16_t temp = I2C1_Read2ByteRegister(0b1001000, 0x00); //reads a value from the temperature sensor and assigns the value of the temp sensor to the value temp
+       uint16_t t = temp; //create the variable t that is equal to the variable temp
+        t = t >> 15; // bit shift t 15 spaces giving us the first number in the 16 bit 
+        // if the first number is 0 then temp is positive, if it is 1 then temp is negative
+        if (t==0){
+            temp = temp >> 8;
+            //if temp is positive we bit shift 8 space 4 past the 4 unused units at the end of the variable and 4 to divide by 16 
+            printf("temp is %d",temp); //print the temperature
+        }
+        else {
+            printf("ERR");//if the temperature is negative then the person is most likely dead.
+        }
         /*counter++;
         //I2C1_WriteNBytes(0b0111001, &data, 2);
         //I2C1_ReadNBytes(0b0111001, &data, 2);
